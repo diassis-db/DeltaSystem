@@ -10,7 +10,7 @@ namespace DeltaSystem
     {
         public static SqlConnection conexaoBanco()
         {
-            string caminho = @"Data Source = DIASSIS-PC; Initial CATALOG=Delta; User ID = sa; Password=12345";
+            string caminho = @"Data Source = SuaInstanciaDoSQL; Initial CATALOG=Delta; User ID = sa; Password=SenhaDefinida";
             SqlConnection conexao = new SqlConnection(caminho);
             try
             {
