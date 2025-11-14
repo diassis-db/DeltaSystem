@@ -1,4 +1,4 @@
-﻿namespace Alpha
+﻿namespace DeltaSystem
 {
     partial class F_Usuario
     {

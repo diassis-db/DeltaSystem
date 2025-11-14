@@ -9,18 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     public partial class F_consultaUsuario : Form
     {
         public F_consultaUsuario()
         {
             InitializeComponent();
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
         }
 
         private void F_consultaUsuario_Load(object sender, EventArgs e)

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     public partial class T_splash : Form
     {

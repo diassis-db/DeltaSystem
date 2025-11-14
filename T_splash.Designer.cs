@@ -1,4 +1,4 @@
-﻿namespace Alpha
+﻿namespace DeltaSystem
 {
     partial class T_splash
     {

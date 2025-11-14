@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     public partial class Cad_cliente : Form
     {
@@ -39,7 +33,8 @@ namespace Alpha
             btn_foto.Enabled = false;
             cb_uf.Enabled = false;
             tb_cidade.Enabled = false;
-            Dictionary<int , string> d = new Dictionary<int , string>();
+            btn_alterar.Enabled = true;
+            Dictionary<int, string> d = new Dictionary<int, string>();
             d.Add(11, "RO");
             d.Add(12, "AC");
             d.Add(13, "AM");
@@ -67,7 +62,7 @@ namespace Alpha
             d.Add(51, "MT");
             d.Add(52, "GO");
             d.Add(53, "DF");
-            cb_uf.DataSource = new BindingSource(d , null);
+            cb_uf.DataSource = new BindingSource(d, null);
             cb_uf.DisplayMember = "Value";
             cb_uf.ValueMember = "Value";
             cb_uf.SelectedIndex = -1;
@@ -90,6 +85,7 @@ namespace Alpha
             tb_cidade.Clear();
             btn_novo.Enabled = false;
             btn_gravar.Enabled = true;
+            btn_alterar.Enabled = false;
             btn_consulta.Enabled = false;
             btn_foto.Enabled = true;
             cb_uf.Enabled = true;
@@ -113,6 +109,7 @@ namespace Alpha
             cb_uf.Enabled = false;
             tb_cidade.Enabled = false;
             btn_novo.Enabled = true;
+            btn_alterar.Enabled = true;
             pb_foto.ImageLocation = string.Empty;
         }
 
@@ -136,59 +133,65 @@ namespace Alpha
 
         private void btn_gravar_Click(object sender, EventArgs e)
         {
-            if (tb_nome.Text == " " || tb_cidade.Text == "" || tb_endereco.Text=="" || mtb_celular.Text=="")
+            if (tb_nome.Text.Trim() == "" || tb_cidade.Text.Trim() == "" || tb_endereco.Text.Trim() == "" || mtb_celular.Text.Trim() == "" || cb_uf.Text.Trim() == "")
             {
                 MessageBox.Show("Cadastro Incompleto!");
                 tb_nome.Focus();
             }
-            else
+            string queryCliente;
+            try
             {
-                try
+                if (string.IsNullOrEmpty(tb_codigo.Text))
                 {
-                    string queryCliente = String.Format(@"INSERT INTO Cliente(Nome , Celular, CPF, Endereco, cep, UF, cidade) 
+                    queryCliente = String.Format(@"INSERT INTO Cliente(Nome , Celular, CPF, Endereco, cep, UF, cidade) 
                                                     VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", tb_nome.Text, mtb_celular.Text, mtb_cpf.Text, tb_endereco.Text, mtb_cep.Text, cb_uf.SelectedValue, tb_cidade.Text);
 
                     BancoSQL.dml(queryCliente);
-
                     MessageBox.Show("Cliente cadastrado com sucesso.");
-                    tb_nome.Clear();
-                    tb_endereco.Clear();
-                    tb_cidade.Clear();
-                    tb_cidade.Clear();
-                    mtb_cpf.Clear();
-                    mtb_cep.Clear();
-                    mtb_celular.Clear();
-
-                    tb_nome.Enabled = false;
-                    mtb_celular.Enabled = false;
-                    mtb_cep.Enabled = false;
-                    mtb_cpf.Enabled = false;
-                    tb_endereco.Enabled = false;
-                    btn_gravar.Enabled = false;
-                    btn_cancelar.Enabled = false;
-                    btn_foto.Enabled = false;
-                    cb_uf.Enabled = false;
-                    tb_cidade.Enabled = false;
-                    btn_novo.Enabled = true;
-                    btn_consulta.Enabled = true;
-
                 }
-                catch (SqlException sq)
+                else
                 {
-                    MessageBox.Show(sq.Message, "ERROR:");
+                    queryCliente = String.Format(@"UPDATE Cliente SET 
+                                           Nome='{0}', Celular='{1}', CPF='{2}', Endereco='{3}', 
+                                           cep ='{4}', UF ='{5}', cidade = '{6}' 
+                                           WHERE Id='{7}'",
+                                           tb_nome.Text, mtb_celular.Text, mtb_cpf.Text, tb_endereco.Text, mtb_cep.Text, cb_uf.SelectedValue, tb_cidade.Text, tb_codigo.Text);
+                    BancoSQL.dml(queryCliente);
+                    MessageBox.Show("Cliente atualizado com sucesso!!!");
                 }
-            }
-        }
 
-        private void mtb_cpf_Enter(object sender, EventArgs e)
-        {
-            
+                tb_nome.Clear();
+                tb_endereco.Clear();
+                tb_cidade.Clear();
+                tb_cidade.Clear();
+                mtb_cpf.Clear();
+                mtb_cep.Clear();
+                mtb_celular.Clear();
+
+                tb_nome.Enabled = false;
+                mtb_celular.Enabled = false;
+                mtb_cep.Enabled = false;
+                mtb_cpf.Enabled = false;
+                tb_endereco.Enabled = false;
+                btn_gravar.Enabled = false;
+                btn_cancelar.Enabled = false;
+                btn_foto.Enabled = false;
+                cb_uf.Enabled = false;
+                tb_cidade.Enabled = false;
+                btn_novo.Enabled = true;
+                btn_consulta.Enabled = true;
+
+            }
+            catch (SqlException sq)
+            {
+                MessageBox.Show(sq.Message, "ERROR:");
+            }
         }
 
         private void btn_consulta_Click(object sender, EventArgs e)
         {
             FormConsultaCliente ccliente = new FormConsultaCliente();
-            if( ccliente.ShowDialog() == DialogResult.OK)
+            if (ccliente.ShowDialog() == DialogResult.OK)
             {
                 tb_codigo.Text = ccliente.dataGridView2.CurrentRow.Cells[0].Value.ToString();
                 tb_nome.Text = ccliente.dataGridView2.CurrentRow.Cells[1].Value.ToString();
@@ -199,8 +202,39 @@ namespace Alpha
                 cb_uf.Text = ccliente.dataGridView2.CurrentRow.Cells[6].Value.ToString();
                 tb_cidade.Text = ccliente.dataGridView2.CurrentRow.Cells[7].Value.ToString();
             }
-            
-            
+
+
+        }
+
+        private void btn_alterar_Click(object sender, EventArgs e)
+        {
+            FormConsultaCliente ccliente = new FormConsultaCliente();
+            if (ccliente.ShowDialog() == DialogResult.OK)
+            {
+                tb_codigo.Text = ccliente.dataGridView2.CurrentRow.Cells[0].Value.ToString();
+                tb_nome.Text = ccliente.dataGridView2.CurrentRow.Cells[1].Value.ToString();
+                mtb_celular.Text = ccliente.dataGridView2.CurrentRow.Cells[2].Value.ToString();
+                mtb_cpf.Text = ccliente.dataGridView2.CurrentRow.Cells[3].Value.ToString();
+                tb_endereco.Text = ccliente.dataGridView2.CurrentRow.Cells[4].Value.ToString();
+                mtb_cep.Text = ccliente.dataGridView2.CurrentRow.Cells[5].Value.ToString();
+                cb_uf.Text = ccliente.dataGridView2.CurrentRow.Cells[6].Value.ToString();
+                tb_cidade.Text = ccliente.dataGridView2.CurrentRow.Cells[7].Value.ToString();
+
+                tb_nome.Enabled = true;
+                mtb_celular.Enabled = true;
+                mtb_cep.Enabled = true;
+                mtb_cpf.Enabled = true;
+                tb_endereco.Enabled = true;
+                btn_gravar.Enabled = true;
+                btn_cancelar.Enabled = true;
+                btn_foto.Enabled = true;
+                cb_uf.Enabled = true;
+                tb_cidade.Enabled = true;
+
+                btn_novo.Enabled = false;
+                btn_consulta.Enabled = false;
+                btn_alterar.Enabled = false;
+            }
         }
     }
 }

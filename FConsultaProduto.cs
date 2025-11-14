@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     public partial class FConsultaProduto : Form
     {
@@ -19,7 +19,7 @@ namespace Alpha
             DataTable dt = new DataTable();
             var conectar = BancoSQL.conexaoBanco();
             var cmd = conectar.CreateCommand();
-            cmd.CommandText = @"SELECT Id,Descricao,Preco from Produtos";
+            cmd.CommandText = @"SELECT Id,Descricao,Preco, Quantidade from Produtos";
             da = new SqlDataAdapter(cmd.CommandText, conectar);
             da.Fill(dt);
             dgv_consultaProdutos.DataSource = dt;

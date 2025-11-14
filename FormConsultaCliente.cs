@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     public partial class FormConsultaCliente : Form
     {
@@ -26,8 +26,7 @@ namespace Alpha
             DataTable dt = new DataTable();
             var conectar = BancoSQL.conexaoBanco();
             var cmd = conectar.CreateCommand();
-            //cmd.CommandText = @"SELECT ID, Nome_Cliente, Celular, CPF FROM  Cliente";
-            cmd.CommandText = @"SELECT ID, Nome, Celular, CPF, Endereco, Cep, UF, cidade FROM  Cliente";
+            cmd.CommandText = @"SELECT Id, Nome, Celular, CPF, Endereco, Cep, UF, cidade FROM  Cliente";
             da = new SqlDataAdapter(cmd.CommandText, conectar);
             da.Fill(dt);
             dataGridView2.DataSource = dt;
@@ -35,11 +34,6 @@ namespace Alpha
             dataGridView2.Columns[4].Visible = false;
             dataGridView2.Columns[5].Visible = false;
             conectar.Close();
-        }
-
-        private void dataGridView2_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void dataGridView2_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

@@ -1,29 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using System.Net.Configuration;
-using System.Collections;
 
-namespace Alpha
+
+namespace DeltaSystem
 {
     class BancoSQL
     {
-        private static SqlConnection conectar;
-
         public static SqlConnection conexaoBanco()
         {
-            string caminho = @"Data Source = DIASSIS-PC; Initial CATALOG=Delta; User ID = sa";
-            conectar = new SqlConnection(caminho);
-            conectar.Open();
-            return conectar;
+            string caminho = @"Data Source = DIASSIS-PC; Initial CATALOG=Delta; User ID = sa; Password=12345";
+            SqlConnection conexao = new SqlConnection(caminho);
+            try
+            {
+                if (conexao.State == System.Data.ConnectionState.Closed)
+                {
+                    conexao.Open();
+                }
+                return conexao;
+            }
+            catch (SqlException sq)
+            {
+                MessageBox.Show(sq.Message, "ERROR: Falha de conexão com o Banco de dados!!! ");
+                return null;
+            }
         }
 
-        public static void dml(string v , string msgOK = null, string msgErro = null)
+        public static void dml(string v, string msgOK = null, string msgErro = null)
         {
             SqlDataAdapter da = null;
             try
@@ -38,7 +42,8 @@ namespace Alpha
                 {
                     MessageBox.Show(msgOK);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 if (msgErro != null)
                 {
@@ -52,16 +57,17 @@ namespace Alpha
             try
             {
                 var cmd = conexaoBanco().CreateCommand();
-                cmd.CommandText = "INSERT INTO Produtos(Descricao , Preco) VALUES(@nome , @preco)";
+                cmd.CommandText = "INSERT INTO Produtos(Descricao , Preco, Quantidade) VALUES(@nome , @preco, @quantidade)";
                 cmd.Parameters.AddWithValue("@nome", p.Nome);
                 cmd.Parameters.AddWithValue("@preco", p.Preco);
+                cmd.Parameters.AddWithValue("@quantidade", p.Quantidade);
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Produto cadastrado com sucesso.");
                 conexaoBanco().Close();
             }
             catch (SqlException e)
             {
-                MessageBox.Show(e.Message , "ERROR:");
+                MessageBox.Show(e.Message, "ERROR:");
             }
         }
     }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Alpha
+namespace DeltaSystem
 {
     internal static class Program
     {
@@ -16,7 +13,6 @@ namespace Alpha
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new F_Login());
             Application.Run(new T_splash());
         }
     }
