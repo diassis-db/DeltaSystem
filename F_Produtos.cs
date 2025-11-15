@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DeltaSystem
@@ -21,7 +21,7 @@ namespace DeltaSystem
         }
         private void tb_preco_Leave(object sender, EventArgs e)
         {
-            if (decimal.TryParse(tb_preco.Text, out decimal preco)) 
+            if (decimal.TryParse(tb_preco.Text, out decimal preco))
             {
                 tb_preco.Text = preco.ToString("N2"); // código para aceitar apenas 2 casas decimais
             }
@@ -42,9 +42,10 @@ namespace DeltaSystem
             tb_descricao.Enabled = true;
             tb_preco.Enabled = true;
             tb_quantidade.Enabled = true;
-            btn_gravar.Enabled=true;
-            btn_cancelar.Enabled=true;
+            btn_gravar.Enabled = true;
+            btn_cancelar.Enabled = true;
             btn_consulta.Enabled = false;
+            btn_alterar.Enabled = false;
             tb_Id.Clear();
             tb_descricao.Clear();
             tb_preco.Clear();
@@ -56,6 +57,7 @@ namespace DeltaSystem
         {
             btn_novo.Enabled = true;
             btn_consulta.Enabled = true;
+            btn_alterar.Enabled = true;
             btn_gravar.Enabled = false;
             tb_descricao.Enabled = false;
             tb_preco.Enabled = false;
@@ -64,27 +66,49 @@ namespace DeltaSystem
 
         private void btn_gravar_Click(object sender, EventArgs e)
         {
-            if (tb_descricao.Text == "")
+            
+            if (tb_descricao.Text == "" || tb_preco.Text == "" || tb_quantidade.Text == "")
             {
-                MessageBox.Show("Preencher a descrição do Produto.");
+                MessageBox.Show("Preencher as informações do produto.");
                 tb_descricao.Focus();
+            }
+
+            if (string.IsNullOrEmpty(tb_Id.Text))
+            {
+                Produto produto = new Produto();
+                produto.Nome = tb_descricao.Text;
+                produto.Preco = Convert.ToDecimal(tb_preco.Text);
+                produto.Quantidade = Convert.ToInt32(tb_quantidade.Text);
+                BancoSQL.GravarNovoProduto(produto);
             }
             else
             {
-                    Produto produto = new Produto();
-                    produto.Nome = tb_descricao.Text;
-                    produto.Preco = Convert.ToDecimal(tb_preco.Text);
-                    produto.Quantidade = Convert.ToInt32(tb_quantidade.Text);
-                    BancoSQL.GravarNovoProduto(produto);
+               string queryProduto = @"UPDATE Produtos 
+               SET Descricao=@desc,
+                   Preco=@preco,
+                   Quantidade=@qtd
+               WHERE Id=@id";
 
-                    tb_descricao.Enabled = false;
-                    tb_preco.Enabled = false;
-                    tb_quantidade.Enabled = false;
-                    btn_fechar.Focus();
-                    btn_novo.Enabled = true;
-                    btn_consulta.Enabled = true;
-                    btn_gravar.Enabled = false;
+                BancoSQL.Dml(queryProduto,
+                    new Dictionary<string, object>
+                    {
+                    { "@desc", tb_descricao.Text },
+                    { "@preco", Convert.ToDecimal(tb_preco.Text) },
+                    { "@qtd", Convert.ToInt32(tb_quantidade.Text) },
+                    { "@id", Convert.ToInt32(tb_Id.Text) }
+                    },
+                    "Produto atualizado com sucesso!",
+                    "Erro ao atualizar produto"
+                );
             }
+
+            tb_descricao.Enabled = false;
+            tb_preco.Enabled = false;
+            tb_quantidade.Enabled = false;
+            btn_fechar.Focus();
+            btn_novo.Enabled = true;
+            btn_consulta.Enabled = true;
+            btn_gravar.Enabled = false;
         }
 
         private void tb_descricao_TextChanged(object sender, EventArgs e)
@@ -97,7 +121,7 @@ namespace DeltaSystem
         private void btn_consulta_Click(object sender, EventArgs e)
         {
             var consutar = new FConsultaProduto();
-            if(consutar.ShowDialog() == DialogResult.OK)
+            if (consutar.ShowDialog() == DialogResult.OK)
             {
                 tb_Id.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[0].Value.ToString();
                 tb_descricao.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[1].Value.ToString();
@@ -112,6 +136,26 @@ namespace DeltaSystem
             {
                 e.Handled = true;
             }
+        }
+
+        private void btn_alterar_Click(object sender, EventArgs e)
+        {
+            var consutar = new FConsultaProduto();
+            if (consutar.ShowDialog() == DialogResult.OK)
+            {
+                tb_Id.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[0].Value.ToString();
+                tb_descricao.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[1].Value.ToString();
+                tb_preco.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[2].Value.ToString();
+                tb_quantidade.Text = consutar.dgv_consultaProdutos.CurrentRow.Cells[3].Value.ToString();
+            }
+
+            tb_descricao.Enabled = true;
+            tb_preco.Enabled = true;
+            tb_quantidade.Enabled = true;
+            btn_gravar.Enabled = true;
+            btn_cancelar.Enabled = true;
+            btn_novo.Enabled = false;
+            btn_consulta.Enabled = false;
         }
     }
 }

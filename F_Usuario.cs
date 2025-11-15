@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace DeltaSystem
 {
@@ -15,14 +16,22 @@ namespace DeltaSystem
         {
             try
             {
-                string vquery = String.Format(@"INSERT INTO Senha(Senha , Nome)
-                                            VALUES('{0}','{1}')", tb_senha.Text, tb_User.Text);
-                BancoSQL.dml(vquery);
-                MessageBox.Show("Usuário cadastrado com sucesso.");
+                string sql = @"INSERT INTO Senha (Senha, Nome)
+                       VALUES (@senha, @nome)";
+
+                var parametros = new Dictionary<string, object>
+                {
+                    { "@senha", tb_senha.Text },
+                    { "@nome", tb_User.Text }
+                };
+
+                BancoSQL.Dml(sql, parametros, "Usuário cadastrado com sucesso!");
+
                 tb_senha.Clear();
                 tb_User.Clear();
                 btn_novo.Focus();
-            }catch(SqlException sq)
+            }
+            catch (SqlException sq)
             {
                 MessageBox.Show(sq.Message, "Error:");
             }
@@ -72,22 +81,41 @@ namespace DeltaSystem
 
         private void btn_excluir_Click(object sender, EventArgs e)
         {
-            var exc = new F_consultaUsuario();
-            if (exc.ShowDialog() == DialogResult.OK)
+            var consulta = new F_consultaUsuario();
+
+            if (consulta.ShowDialog() == DialogResult.OK)
             {
-                DialogResult res = MessageBox.Show("Deseja Excluir usuário?: ", "Exclusão ", MessageBoxButtons.YesNo);
+                // Verifica se existe linha selecionada
+                if (consulta.dataGridView1.CurrentRow == null)
                 {
-                    tb_User.Text = exc.dataGridView1.CurrentRow.Cells[0].Value.ToString();
-                    if (res == DialogResult.Yes)
+                    MessageBox.Show("Nenhum usuário selecionado.");
+                    return;
+                }
+
+                string nome = consulta.dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                tb_User.Text = nome;
+
+                DialogResult res = MessageBox.Show(
+                    $"Deseja excluir o usuário '{nome}'?",
+                    "Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (res == DialogResult.Yes)
+                {
+                    string sql = @"DELETE FROM Senha WHERE Nome = @nome";
+
+                    var parametros = new Dictionary<string, object>
                     {
-                        string delete = @"DELETE FROM Senha where nome='" + tb_User.Text + "'";
-                        BancoSQL.dml(delete);
-                        MessageBox.Show("Usuário Excluido com sucesso");
-                        tb_User.Clear();
-                    }
+                        { "@nome", nome }
+                    };
+
+                    BancoSQL.Dml(sql, parametros, "Usuário excluído com sucesso!");
+
+                    tb_User.Clear();
                 }
             }
-            
         }
 
         private void btn_novo_Click(object sender, EventArgs e)

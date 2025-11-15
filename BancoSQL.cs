@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.Sql;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -8,67 +8,57 @@ namespace DeltaSystem
 {
     class BancoSQL
     {
-        public static SqlConnection conexaoBanco()
+        private static string connectionString =
+            @"";
+        public static SqlConnection ConexaoBanco()
         {
-            string caminho = @"Data Source = SuaInstanciaDoSQL; Initial CATALOG=Delta; User ID = sa; Password=SenhaDefinida";
-            SqlConnection conexao = new SqlConnection(caminho);
-            try
-            {
-                if (conexao.State == System.Data.ConnectionState.Closed)
-                {
-                    conexao.Open();
-                }
-                return conexao;
-            }
-            catch (SqlException sq)
-            {
-                MessageBox.Show(sq.Message, "ERROR: Falha de conexão com o Banco de dados!!! ");
-                return null;
-            }
+            return new SqlConnection(connectionString);
         }
 
-        public static void dml(string v, string msgOK = null, string msgErro = null)
+        public static void Dml(string sql, Dictionary<string, object> parametros,
+                               string msgOK = null, string msgErro = null)
         {
-            SqlDataAdapter da = null;
             try
             {
-                var cp = conexaoBanco();
-                var cmd = cp.CreateCommand();
-                cmd.CommandText = v;
-                da = new SqlDataAdapter(cmd.CommandText, cp);
-                cmd.ExecuteNonQuery();
-                cp.Close();
-                if (msgOK != null)
+                using (SqlConnection conexao = ConexaoBanco())
                 {
-                    MessageBox.Show(msgOK);
+                    conexao.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conexao))
+                    {
+                        if (parametros != null)
+                        {
+                            foreach (var p in parametros)
+                                cmd.Parameters.AddWithValue(p.Key, p.Value);
+                        }
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+
+                if (!string.IsNullOrEmpty(msgOK))
+                    MessageBox.Show(msgOK);
             }
             catch (Exception ex)
             {
-                if (msgErro != null)
-                {
+                if (!string.IsNullOrEmpty(msgErro))
                     MessageBox.Show(msgErro + "\n" + ex.Message);
-                }
             }
         }
 
         public static void GravarNovoProduto(Produto p)
         {
-            try
-            {
-                var cmd = conexaoBanco().CreateCommand();
-                cmd.CommandText = "INSERT INTO Produtos(Descricao , Preco, Quantidade) VALUES(@nome , @preco, @quantidade)";
-                cmd.Parameters.AddWithValue("@nome", p.Nome);
-                cmd.Parameters.AddWithValue("@preco", p.Preco);
-                cmd.Parameters.AddWithValue("@quantidade", p.Quantidade);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Produto cadastrado com sucesso.");
-                conexaoBanco().Close();
-            }
-            catch (SqlException e)
-            {
-                MessageBox.Show(e.Message, "ERROR:");
-            }
+                string sql = @"INSERT INTO Produtos (Descricao, Preco, Quantidade)
+                           VALUES (@desc, @preco, @qtd)";
+                var parametros = new Dictionary<string, object>
+                {
+                    { "@desc", p.Nome },
+                    { "@preco", p.Preco },
+                    { "@qtd", p.Quantidade }
+                };
+
+                Dml(sql, parametros, "Produto cadastrado com sucesso!",
+                    "Erro ao cadastrar produto");
         }
     }
 }

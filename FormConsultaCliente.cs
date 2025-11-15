@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DeltaSystem
@@ -24,7 +18,7 @@ namespace DeltaSystem
             //dataGridView2.Columns[0].Width = 80;
             SqlDataAdapter da = null;
             DataTable dt = new DataTable();
-            var conectar = BancoSQL.conexaoBanco();
+            var conectar = BancoSQL.ConexaoBanco();
             var cmd = conectar.CreateCommand();
             cmd.CommandText = @"SELECT Id, Nome, Celular, CPF, Endereco, Cep, UF, cidade FROM  Cliente";
             da = new SqlDataAdapter(cmd.CommandText, conectar);

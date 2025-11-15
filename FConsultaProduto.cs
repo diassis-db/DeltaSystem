@@ -17,7 +17,7 @@ namespace DeltaSystem
         {
             SqlDataAdapter da = null;
             DataTable dt = new DataTable();
-            var conectar = BancoSQL.conexaoBanco();
+            var conectar = BancoSQL.ConexaoBanco();
             var cmd = conectar.CreateCommand();
             cmd.CommandText = @"SELECT Id,Descricao,Preco, Quantidade from Produtos";
             da = new SqlDataAdapter(cmd.CommandText, conectar);

@@ -41,6 +41,7 @@
             this.btn_novo = new System.Windows.Forms.Button();
             this.tb_quantidade = new System.Windows.Forms.TextBox();
             this.lb_quant = new System.Windows.Forms.Label();
+            this.btn_alterar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tb_Id
@@ -110,7 +111,7 @@
             this.btn_fechar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.btn_fechar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_fechar.ForeColor = System.Drawing.Color.White;
-            this.btn_fechar.Location = new System.Drawing.Point(287, 185);
+            this.btn_fechar.Location = new System.Drawing.Point(353, 185);
             this.btn_fechar.Margin = new System.Windows.Forms.Padding(2);
             this.btn_fechar.Name = "btn_fechar";
             this.btn_fechar.Size = new System.Drawing.Size(62, 25);
@@ -191,11 +192,26 @@
             this.lb_quant.TabIndex = 11;
             this.lb_quant.Text = "Quantidade";
             // 
+            // btn_alterar
+            // 
+            this.btn_alterar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btn_alterar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_alterar.ForeColor = System.Drawing.Color.White;
+            this.btn_alterar.Location = new System.Drawing.Point(286, 185);
+            this.btn_alterar.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_alterar.Name = "btn_alterar";
+            this.btn_alterar.Size = new System.Drawing.Size(62, 25);
+            this.btn_alterar.TabIndex = 12;
+            this.btn_alterar.Text = "Alterar";
+            this.btn_alterar.UseVisualStyleBackColor = false;
+            this.btn_alterar.Click += new System.EventHandler(this.btn_alterar_Click);
+            // 
             // F_Produtos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 228);
+            this.ClientSize = new System.Drawing.Size(453, 228);
+            this.Controls.Add(this.btn_alterar);
             this.Controls.Add(this.tb_quantidade);
             this.Controls.Add(this.lb_quant);
             this.Controls.Add(this.btn_novo);
@@ -235,5 +251,6 @@
         private System.Windows.Forms.Button btn_novo;
         private System.Windows.Forms.TextBox tb_quantidade;
         private System.Windows.Forms.Label lb_quant;
+        private System.Windows.Forms.Button btn_alterar;
     }
 }

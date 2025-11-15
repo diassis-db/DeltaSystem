@@ -87,7 +87,7 @@
             this.tb_nome.Name = "tb_nome";
             this.tb_nome.Size = new System.Drawing.Size(266, 20);
             this.tb_nome.TabIndex = 1;
-            this.tb_nome.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            
             // 
             // label1
             // 

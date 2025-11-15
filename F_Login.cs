@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.Sql;
 using System.Data.SqlClient;
 
 namespace DeltaSystem
 {
     public partial class F_Login : Form
     {
-        SqlConnection conectarLogin = new SqlConnection(@"Data Source= SuaInstanciaDoSQL ; Initial CATALOG=Delta; User ID=sa; Password=SenhaDefinida");
+        SqlConnection conectarLogin = new SqlConnection();
         public F_Login()
         {
             InitializeComponent();

@@ -16,11 +16,6 @@ namespace DeltaSystem
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void Cad_cliente_Load(object sender, EventArgs e)
         {
             tb_nome.Enabled = false;
@@ -133,36 +128,72 @@ namespace DeltaSystem
 
         private void btn_gravar_Click(object sender, EventArgs e)
         {
-            if (tb_nome.Text.Trim() == "" || tb_cidade.Text.Trim() == "" || tb_endereco.Text.Trim() == "" || mtb_celular.Text.Trim() == "" || cb_uf.Text.Trim() == "")
+            if (string.IsNullOrWhiteSpace(tb_nome.Text) ||
+                string.IsNullOrWhiteSpace(tb_cidade.Text) ||
+                string.IsNullOrWhiteSpace(tb_endereco.Text) ||
+                string.IsNullOrWhiteSpace(mtb_celular.Text) ||
+                string.IsNullOrWhiteSpace(cb_uf.Text))
             {
                 MessageBox.Show("Cadastro Incompleto!");
                 tb_nome.Focus();
+                return;
             }
-            string queryCliente;
+
             try
             {
+                string sql;
+                Dictionary<string, object> parametros;
+
+                // Novo cliente
                 if (string.IsNullOrEmpty(tb_codigo.Text))
                 {
-                    queryCliente = String.Format(@"INSERT INTO Cliente(Nome , Celular, CPF, Endereco, cep, UF, cidade) 
-                                                    VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", tb_nome.Text, mtb_celular.Text, mtb_cpf.Text, tb_endereco.Text, mtb_cep.Text, cb_uf.SelectedValue, tb_cidade.Text);
+                    sql = @"INSERT INTO Cliente 
+                    (Nome, Celular, CPF, Endereco, cep, UF, cidade)
+                    VALUES (@nome, @celular, @cpf, @endereco, @cep, @uf, @cidade)";
 
-                    BancoSQL.dml(queryCliente);
-                    MessageBox.Show("Cliente cadastrado com sucesso.");
+                    parametros = new Dictionary<string, object>
+                    {
+                        { "@nome", tb_nome.Text },
+                        { "@celular", mtb_celular.Text },
+                        { "@cpf", mtb_cpf.Text },
+                        { "@endereco", tb_endereco.Text },
+                        { "@cep", mtb_cep.Text },
+                        { "@uf", cb_uf.Text },
+                        { "@cidade", tb_cidade.Text }
+                    };
+
+                    BancoSQL.Dml(sql, parametros, "Cliente cadastrado com sucesso!");
                 }
+                // Atualizar cliente existente
                 else
                 {
-                    queryCliente = String.Format(@"UPDATE Cliente SET 
-                                           Nome='{0}', Celular='{1}', CPF='{2}', Endereco='{3}', 
-                                           cep ='{4}', UF ='{5}', cidade = '{6}' 
-                                           WHERE Id='{7}'",
-                                           tb_nome.Text, mtb_celular.Text, mtb_cpf.Text, tb_endereco.Text, mtb_cep.Text, cb_uf.SelectedValue, tb_cidade.Text, tb_codigo.Text);
-                    BancoSQL.dml(queryCliente);
-                    MessageBox.Show("Cliente atualizado com sucesso!!!");
+                    sql = @"UPDATE Cliente SET 
+                        Nome = @nome,
+                        Celular = @celular,
+                        CPF = @cpf,
+                        Endereco = @endereco,
+                        cep = @cep,
+                        UF = @uf,
+                        cidade = @cidade
+                    WHERE Id = @id";
+
+                    parametros = new Dictionary<string, object>
+                    {
+                        { "@nome", tb_nome.Text },
+                        { "@celular", mtb_celular.Text },
+                        { "@cpf", mtb_cpf.Text },
+                        { "@endereco", tb_endereco.Text },
+                        { "@cep", mtb_cep.Text },
+                        { "@uf", cb_uf.Text },
+                        { "@cidade", tb_cidade.Text },
+                        { "@id", Convert.ToInt32(tb_codigo.Text) }
+                    };
+
+                    BancoSQL.Dml(sql, parametros, "Cliente atualizado com sucesso!");
                 }
 
                 tb_nome.Clear();
                 tb_endereco.Clear();
-                tb_cidade.Clear();
                 tb_cidade.Clear();
                 mtb_cpf.Clear();
                 mtb_cep.Clear();
