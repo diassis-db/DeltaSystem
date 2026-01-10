@@ -14,8 +14,26 @@ namespace DeltaSystem
 
         private void btn_gravar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(tb_User.Text) || string.IsNullOrWhiteSpace(tb_senha.Text))
+            {
+                MessageBox.Show("Por favor, preencha todos os campos.", "Aviso");
+                return;
+            }
             try
             {
+                string verificaNomeExiste = "SELECT COUNT(*) FROM Senha WHERE Nome = @nome";
+                var paramVerificar = new Dictionary<string, object> { { "@nome", tb_User.Text } };
+                int usuarioExiste = Convert.ToInt32(BancoSQL.VerificarUsuarioESenhaExistente(verificaNomeExiste, paramVerificar).Rows[0][0]);
+
+                if (usuarioExiste > 0)
+                {
+                    MessageBox.Show("Este nome de usuário já está em uso. Escolha outro.", "Aviso");                  
+                    tb_senha.Clear();
+                    tb_User.Clear();
+                    tb_User.Focus();
+                    return;
+                }
+
                 string sql = @"INSERT INTO Senha (Senha, Nome)
                        VALUES (@senha, @nome)";
 
@@ -43,10 +61,7 @@ namespace DeltaSystem
             btn_novo.TabIndex = 0;
         }
 
-        private void btn_fechar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void btn_fechar_Click(object sender, EventArgs e) => this.Close();
 
         private void btn_cancela_Click(object sender, EventArgs e)
         {

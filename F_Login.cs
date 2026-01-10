@@ -7,7 +7,7 @@ namespace DeltaSystem
 {
     public partial class F_Login : Form
     {
-        SqlConnection conectarLogin = new SqlConnection();
+        SqlConnection conectarLogin = new SqlConnection(@"Data Source = DIASSIS-PC ; Initial CATALOG=Delta; User ID=sa; Password=12345");
         public F_Login()
         {
             InitializeComponent();

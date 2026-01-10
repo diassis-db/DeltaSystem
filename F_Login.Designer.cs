@@ -42,9 +42,10 @@
             this.bot_confirmar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bot_confirmar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bot_confirmar.ForeColor = System.Drawing.Color.Silver;
-            this.bot_confirmar.Location = new System.Drawing.Point(69, 234);
+            this.bot_confirmar.Location = new System.Drawing.Point(52, 190);
+            this.bot_confirmar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bot_confirmar.Name = "bot_confirmar";
-            this.bot_confirmar.Size = new System.Drawing.Size(108, 36);
+            this.bot_confirmar.Size = new System.Drawing.Size(81, 29);
             this.bot_confirmar.TabIndex = 3;
             this.bot_confirmar.Text = "Confirmar";
             this.bot_confirmar.UseVisualStyleBackColor = false;
@@ -55,9 +56,10 @@
             this.bot_fechar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bot_fechar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bot_fechar.ForeColor = System.Drawing.Color.Silver;
-            this.bot_fechar.Location = new System.Drawing.Point(202, 234);
+            this.bot_fechar.Location = new System.Drawing.Point(152, 190);
+            this.bot_fechar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bot_fechar.Name = "bot_fechar";
-            this.bot_fechar.Size = new System.Drawing.Size(108, 36);
+            this.bot_fechar.Size = new System.Drawing.Size(81, 29);
             this.bot_fechar.TabIndex = 4;
             this.bot_fechar.Text = "Fechar";
             this.bot_fechar.UseVisualStyleBackColor = false;
@@ -65,9 +67,10 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(69, 178);
+            this.textBox1.Location = new System.Drawing.Point(52, 145);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(153, 22);
+            this.textBox1.Size = new System.Drawing.Size(116, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.UseSystemPasswordChar = true;
@@ -78,17 +81,19 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Silver;
-            this.label1.Location = new System.Drawing.Point(67, 156);
+            this.label1.Location = new System.Drawing.Point(50, 127);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 18);
+            this.label1.Size = new System.Drawing.Size(48, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Senha";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(69, 108);
+            this.textBox2.Location = new System.Drawing.Point(52, 88);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(241, 22);
+            this.textBox2.Size = new System.Drawing.Size(182, 20);
             this.textBox2.TabIndex = 1;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -99,19 +104,20 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Silver;
-            this.label2.Location = new System.Drawing.Point(67, 85);
+            this.label2.Location = new System.Drawing.Point(50, 69);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 18);
+            this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 5;
             this.label2.Text = "Usuário";
             // 
             // F_Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(686, 395);
+            this.ClientSize = new System.Drawing.Size(514, 321);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label1);
@@ -119,6 +125,7 @@
             this.Controls.Add(this.bot_fechar);
             this.Controls.Add(this.bot_confirmar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "F_Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

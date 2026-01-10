@@ -16,6 +16,7 @@ namespace DeltaSystem
             InitializeComponent();
         }
 
+        #region Formulário Load do Cliente
         private void Cad_cliente_Load(object sender, EventArgs e)
         {
             tb_nome.Enabled = false;
@@ -63,6 +64,9 @@ namespace DeltaSystem
             cb_uf.SelectedIndex = -1;
         }
 
+        #endregion
+
+        #region Botões do Formulário Cliente
         private void btn_novo_Click(object sender, EventArgs e)
         {
             tb_nome.Enabled = true;
@@ -108,10 +112,7 @@ namespace DeltaSystem
             pb_foto.ImageLocation = string.Empty;
         }
 
-        private void btn_fechar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void btn_fechar_Click(object sender, EventArgs e) => this.Close();
 
         private void btn_foto_Click(object sender, EventArgs e)
         {
@@ -213,10 +214,7 @@ namespace DeltaSystem
                 btn_consulta.Enabled = true;
 
             }
-            catch (SqlException sq)
-            {
-                MessageBox.Show(sq.Message, "ERROR:");
-            }
+            catch (SqlException sq) { MessageBox.Show(sq.Message, "ERROR:"); }
         }
 
         private void btn_consulta_Click(object sender, EventArgs e)
@@ -233,8 +231,6 @@ namespace DeltaSystem
                 cb_uf.Text = ccliente.dataGridView2.CurrentRow.Cells[6].Value.ToString();
                 tb_cidade.Text = ccliente.dataGridView2.CurrentRow.Cells[7].Value.ToString();
             }
-
-
         }
 
         private void btn_alterar_Click(object sender, EventArgs e)
@@ -267,5 +263,7 @@ namespace DeltaSystem
                 btn_alterar.Enabled = false;
             }
         }
+        #endregion
+
     }
 }
