@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DeltaSystem
@@ -26,6 +24,7 @@ namespace DeltaSystem
 
         private void vendasDiversasToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
             F_Usuario usuario = new F_Usuario();
             usuario.Show();
         }
@@ -43,11 +42,6 @@ namespace DeltaSystem
         {
             Cad_cliente cli = new Cad_cliente();
             cli.Show();
-        }
-
-        private void F_principal_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void produtosToolStripMenuItem_Click(object sender, EventArgs e)
